@@ -1,5 +1,9 @@
 LEARNING_RATE = 0.0001
 
+######TODO: This is doing summing wrong
+##########  each gradient descent step should sum over all training samples
+
+
 def cost_function():
     print(1)
 
