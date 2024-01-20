@@ -1,57 +1,47 @@
-#LEARNING_RATE = 0.00000003
-LEARNING_RATE = 0.000003
 
-epsilon = 10**-1
+def transpose(matrix: list[list]): 
+    if len(matrix) == 0:
+        return matrix
+    row_count = len(matrix) 
+    column_count = len(matrix[0])
+    transposed_matrix = []
+    for i in range(column_count):
+        new_row = []
 
+        for j in range(row_count):
+            new_row.append(matrix[j][i])
+        transposed_matrix.append(new_row)
+    return transposed_matrix
 
-#TODO: Fix mean squared error?
+def matrix_multiply(matrix_1: list[list], matrix_2: list[list]):
+    if len(matrix_1) == 0 or len(matrix_2) == 0:
+        return None
+    
+    if len(matrix_1[0]) != len(matrix_2):
+        return -1
 
-def gradient_descent_step_single_parameter(parameters, training_data_set, labels, parameter_index):
-    parameter = parameters[parameter_index]
-    gradient_descent_derivative = 0
-    for i in range(len(training_data_set)):
-        data_point = training_data_set[i]
-        data_point_feature = data_point[parameter_index]
-        
-        label = labels[i]
+    result = []
 
-        hypothesis = perform_linear_hypothesis(parameters, data_point)
-        loss_function = (hypothesis - label)
+    result_rows = len(matrix_1)
 
-        gradient_descent_derivative += loss_function * data_point_feature
+    result_columns = len(matrix_2[0])
 
-    new_parameter = parameter - LEARNING_RATE * gradient_descent_derivative
+    for row_index in range(result_rows):
+        result.append([])
+        matrix_1_row = matrix_1[row_index]
+        for column_index in range(result_columns):
+            result_value = 0
 
-    parameters[parameter_index] = new_parameter
-    print(f'gradient_descent_derivative: {gradient_descent_derivative}')
-    print(f'data_point_feature: {data_point_feature}')
-    print(f'parameters: {parameters}')
-    return parameters
+            for multiplication_index in range(len(matrix_1_row)):
+                multiplication = matrix_1_row[multiplication_index] * matrix_2[multiplication_index][column_index]
+                result_value += multiplication
 
-
-def gradient_descent_step(parameters, training_data_set, labels):
-    for i in range(len(parameters)):
-        parameters = gradient_descent_step_single_parameter(parameters, training_data_set, labels, i)
-
-    return parameters
-
-def perform_linear_hypothesis(parameters, data_point):
-    result = 0
-
-    for i in range(len(parameters)):
-        result += parameters[i] * data_point[i]
+            result[row_index].append(result_value)
     return result
+            
+    
 
-def get_mean_squared_error(training_data_set, labels, parameters):
-    total_squared_error = 0
-    for i in range(len(training_data_set)):
-        data_point = training_data_set[i]
-        label = training_data_set[i]
 
-        error = perform_linear_hypothesis(parameters, data_point)
-        squared_error = error ** 2
-        total_squared_error += squared_error
-    return total_squared_error / len(training_data_set)
 
 def main():
     #n: number of features
@@ -168,20 +158,18 @@ def main():
     print(len(labels))
     print(len(training_data_set))
     parameters = [1, 1, 1, 1] # array size (n + 1)
-
-
-
-    while True:
-
-        parameters = gradient_descent_step(parameters, training_data_set, labels)
-        #print(f'Parameters: {parameters}')
-        #mean_squared_error = 5
-        mean_squared_error = get_mean_squared_error(training_data_set, labels, parameters)
-        print(f'MEAN SQUARED ERROR: {mean_squared_error}')
-        if mean_squared_error < epsilon:
-            break
         
 
     
 if __name__ == '__main__':
-    main()
+    # main()
+    matrix = [[1, 2,3],[4,5,6]]
+
+    transposed = transpose(matrix)
+
+    print(matrix)
+    print(transposed)
+
+    multiplied = matrix_multiply(matrix, transposed) 
+    print('multiplied')
+    print(multiplied)
