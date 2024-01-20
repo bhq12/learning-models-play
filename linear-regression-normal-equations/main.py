@@ -1,3 +1,4 @@
+import numpy
 
 def transpose(matrix: list[list]): 
     if len(matrix) == 0:
@@ -12,7 +13,8 @@ def transpose(matrix: list[list]):
             new_row.append(matrix[j][i])
         transposed_matrix.append(new_row)
     return transposed_matrix
-
+#NOTE: None of this is very efficient from a data-locatity standpoint
+# but gets the job done for small expamples
 def matrix_multiply(matrix_1: list[list], matrix_2: list[list]):
     if len(matrix_1) == 0 or len(matrix_2) == 0:
         return None
@@ -39,9 +41,11 @@ def matrix_multiply(matrix_1: list[list], matrix_2: list[list]):
             result[row_index].append(result_value)
     return result
             
-    
+def matrix_inverse(matrix: list):
+    # Cheating but I'm trying to do machine learning not re-invent linear algebra
+    data_frame = numpy.array(matrix)
 
-
+    return numpy.linalg.inv(data_frame).tolist()
 
 def main():
     #n: number of features
@@ -173,3 +177,9 @@ if __name__ == '__main__':
     multiplied = matrix_multiply(matrix, transposed) 
     print('multiplied')
     print(multiplied)
+    inverse = matrix_inverse(multiplied)
+    print('inverse')
+    print(inverse)
+    # Expect identity matrix 
+    print('inverse multiplied')
+    print(matrix_multiply(multiplied, inverse))
