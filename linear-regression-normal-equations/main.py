@@ -1,6 +1,6 @@
 import numpy
 
-def transpose(matrix: list[list]): 
+def matrix_transpose(matrix: list[list]): 
     if len(matrix) == 0:
         return matrix
     row_count = len(matrix) 
@@ -53,9 +53,9 @@ def main():
 
     n = 3
     m = 7
-    
-
-    labels = range(1,101) # array size m
+    labels = []# array size m
+    for i in range(1,101):
+        labels.append([i])
     training_data_set = [
         [1, 1, 2.34, 9.99],
         [1, 2, 5.32, 3.8],
@@ -161,7 +161,24 @@ def main():
 
     print(len(labels))
     print(len(training_data_set))
-    parameters = [1, 1, 1, 1] # array size (n + 1)
+    parameters = [[1], [1], [1], [1]] # array size (n + 1)
+
+
+    # Optimum theta = (X^T.X)^-1.X^T.y
+
+    training_data_transposed = matrix_transpose(training_data_set)
+
+    matrix_to_invert = matrix_multiply(training_data_transposed, training_data_set)
+
+    inverted_matrix = matrix_inverse(matrix_to_invert)
+
+    transformed_training_data = matrix_multiply(inverted_matrix, training_data_transposed)
+
+    optimum_parameters = matrix_multiply(transformed_training_data, labels)
+
+    print('Optimum parameters:')
+
+    print(optimum_parameters)
         
 
     
@@ -169,7 +186,7 @@ if __name__ == '__main__':
     # main()
     matrix = [[1, 2,3],[4,5,6]]
 
-    transposed = transpose(matrix)
+    transposed = matrix_transpose(matrix)
 
     print(matrix)
     print(transposed)
@@ -183,3 +200,7 @@ if __name__ == '__main__':
     # Expect identity matrix 
     print('inverse multiplied')
     print(matrix_multiply(multiplied, inverse))
+
+    print('Performing regression:')
+
+    main()
